@@ -5,6 +5,6 @@ Window.width = 1134
 Window.height = 640
 Window.bgcolor = C_BLACK
 
-require_remote "src/scjong.rb"
+require_remote "src/hori2022.rb"
 
-Scjong.run
+Hori2022.run

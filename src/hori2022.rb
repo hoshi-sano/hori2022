@@ -1,4 +1,4 @@
-module Scjong
+module Hori2022
   class << self
     def init
       @current_scene = TitleScene.new
@@ -107,7 +107,7 @@ module Scjong
 
     def draw_components
       @bg.draw
-      Window.draw_font(50, 50, "Hello Scjong!", Font.default, color: C_BLACK)
+      Window.draw_font(50, 50, "Hello HORI2022!", Font.default, color: C_BLACK)
       super
     end
   end
