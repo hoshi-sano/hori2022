@@ -10,5 +10,6 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
     super
     @components << BG
     @components << PBB::SceneChangeButton.new(410, 10, BACK_IMAGE, self, PBB::TitleScene)
+    @components << PBB::Field.new
   end
 end
