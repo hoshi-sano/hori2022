@@ -15,6 +15,7 @@ module PhBangBang
     end
   end
 end
+PBB = PhBangBang # shortcut
 
 require_remote "src/ph_bang_bang/touch_circle.rb"
 require_remote "src/ph_bang_bang/input.rb"

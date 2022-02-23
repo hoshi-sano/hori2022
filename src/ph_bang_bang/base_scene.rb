@@ -25,12 +25,12 @@ class PhBangBang::BaseScene
   end
 
   def check_keys
-    if PhBangBang::Input.mouse_push?
-      @components << PhBangBang::TouchCircle.new(*PhBangBang::Input.mouse_xy)
+    if PBB::Input.mouse_push?
+      @components << PBB::TouchCircle.new(*PBB::Input.mouse_xy)
     end
 
-    PhBangBang::Input.new_touches do |t|
-      @components << PhBangBang::TouchCircle.new(t.x, t.y)
+    PBB::Input.new_touches do |t|
+      @components << PBB::TouchCircle.new(t.x, t.y)
     end
   end
 end
