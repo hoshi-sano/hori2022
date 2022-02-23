@@ -1,4 +1,4 @@
-module Hori2022
+module PhBangBang
   class << self
     def init
       @current_scene = TitleScene.new

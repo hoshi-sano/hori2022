@@ -5,6 +5,6 @@ Window.width = 450
 Window.height = 800
 Window.bgcolor = C_BLACK
 
-require_remote "src/hori2022.rb"
+require_remote "src/ph_bang_bang.rb"
 
-Hori2022.run
+PhBangBang.run
