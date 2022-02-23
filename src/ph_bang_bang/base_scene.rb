@@ -12,6 +12,7 @@ class PhBangBang::BaseScene
     update_components
     draw_components
     check_keys
+    check_collision
   end
 
   def update_components
@@ -21,6 +22,10 @@ class PhBangBang::BaseScene
 
   def draw_components
     @components.each(&:draw)
+  end
+
+  def check_collision
+    DXOpal::Sprite.check(@components, @components, :shot, :hit)
   end
 
   def check_keys

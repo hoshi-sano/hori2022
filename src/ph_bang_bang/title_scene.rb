@@ -1,14 +1,23 @@
 # タイトルシーン管理用クラス
 class PhBangBang::TitleScene < PhBangBang::BaseScene
-  BG = PBB::Sprite.new(0, 0, Image.new(Window.width, Window.height, C_GREEN))
+  BG = PBB::Sprite.new(0, 0, Image.new(Window.width, Window.height, [200, 200, 200])).
+         tap { |bg| bg.collision_enable = false }
+  TITLE_IMAGE = Image.new(350, 100, C_WHITE).tap { |img|
+    img.draw_font(75, 30, "Ph Bang Bang !!", Font.default, C_BLACK)
+  }
+  TITLE_SPRITE = PBB::Sprite.new(50, 50, TITLE_IMAGE)
+  START_IMAGE = Image.new(350, 100, C_WHITE).tap { |img|
+    img.draw_font(135, 30, "START", Font.default, C_BLACK)
+  }
 
   def generate_components
     super
     @components << BG
+    @components << TITLE_SPRITE
+    @components << PBB::SceneChangeButton.new(50, 450, START_IMAGE, "TODO: GameScene")
   end
 
   def draw_components
     super
-    Window.draw_font(50, 50, "HORI2022", Font.default, color: C_BLACK)
   end
 end
