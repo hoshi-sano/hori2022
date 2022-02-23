@@ -9,6 +9,7 @@ class PhBangBang::BaseScene
   end
 
   def play
+    PBB.change_scene(@next_scene_class) if @finalized
     update_components
     draw_components
     check_keys
@@ -36,5 +37,14 @@ class PhBangBang::BaseScene
     PBB::Input.new_touches do |t|
       @components << PBB::TouchCircle.new(t.x, t.y)
     end
+  end
+
+  def change_scene(next_scene_class)
+    @next_scene_class = next_scene_class
+    finalize
+  end
+
+  def finalize
+    @finalized = true
   end
 end

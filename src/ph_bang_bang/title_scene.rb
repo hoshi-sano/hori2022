@@ -14,10 +14,6 @@ class PhBangBang::TitleScene < PhBangBang::BaseScene
     super
     @components << BG
     @components << TITLE_SPRITE
-    @components << PBB::SceneChangeButton.new(50, 450, START_IMAGE, "TODO: GameScene")
-  end
-
-  def draw_components
-    super
+    @components << PBB::SceneChangeButton.new(50, 450, START_IMAGE, self, PBB::GameScene)
   end
 end
