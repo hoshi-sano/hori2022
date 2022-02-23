@@ -17,6 +17,7 @@ module PhBangBang
 end
 PBB = PhBangBang # shortcut
 
+require_remote "src/ph_bang_bang/sprite.rb"
 require_remote "src/ph_bang_bang/touch_circle.rb"
 require_remote "src/ph_bang_bang/input.rb"
 require_remote "src/ph_bang_bang/base_scene.rb"

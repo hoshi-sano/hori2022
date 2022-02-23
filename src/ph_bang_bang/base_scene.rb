@@ -1,9 +1,8 @@
 # 各シーンクラスのベースとなるクラス
 class PhBangBang::BaseScene
-  def init
+  def initialize
     @components = []
     generate_components
-    @draw_components = @components.select { |c| c.respond_to?(:draw) }
   end
 
   def generate_components
