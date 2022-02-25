@@ -8,8 +8,10 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
 
   def generate_components
     super
+    @field = PBB::Field.new
     @components << BG
     @components << PBB::SceneChangeButton.new(410, 10, BACK_IMAGE, self, PBB::TitleScene)
-    @components << PBB::Field.new
+    @components << @field
+    @components.concat(@field.tiles)
   end
 end
