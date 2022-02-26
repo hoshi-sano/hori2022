@@ -32,7 +32,8 @@ class PhBangBang::Tile < PhBangBang::Sprite
     self.y = @field.y + @ty * HEIGHT
   end
 
-  def hit
+  def hit(other)
+    return unless other.is_a?(PBB::TouchCircle)
     @field.move(self)
   end
 end

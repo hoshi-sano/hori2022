@@ -12,8 +12,8 @@ class PhBangBang::TitleScene < PhBangBang::BaseScene
 
   def generate_components
     super
-    @components << BG
-    @components << TITLE_SPRITE
-    @components << PBB::SceneChangeButton.new(50, 450, START_IMAGE, self, PBB::GameScene)
+    @defence_components << BG
+    @defence_components << TITLE_SPRITE
+    @defence_components << PBB::SceneChangeButton.new(50, 450, START_IMAGE, self, PBB::GameScene)
   end
 end
