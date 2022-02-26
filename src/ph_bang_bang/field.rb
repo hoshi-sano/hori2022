@@ -10,15 +10,35 @@ class PhBangBang::Field < PhBangBang::Sprite
     super(x, y, IMAGE)
     self.collision_enable = false
 
-    @blank_tile = PBB::BlankTile.new(4, 4, self)
     @tiles = [
-      [0, 0], [1, 0], [2, 0], [3, 0], [4, 0],
-      [0, 1], [1, 1], [2, 1], [3, 1], [4, 1],
-      [0, 2], [1, 2], [2, 2], [3, 2], [4, 2],
-      [0, 3], [1, 3], [2, 3], [3, 3], [4, 3],
-      [0, 4], [1, 4], [2, 4], [3, 4],
-    ].map { |tx, ty| PBB::Tile.new(tx, ty, self) }
+      PBB::HTile.new(0, 0, self),
+      PBB::HTile.new(1, 0, self),
+      PBB::VTile.new(2, 0, self),
+      PBB::VTile.new(3, 0, self),
+      PBB::HVTile.new(4, 0, self),
+      PBB::HVTile.new(0, 1, self),
+      PBB::HVTile.new(1, 1, self),
+      PBB::HVTile.new(2, 1, self),
+      PBB::LDRUTile.new(3, 1, self),
+      PBB::LDRUTile.new(4, 1, self),
+      PBB::LDRUTile.new(0, 2, self),
+      PBB::LDRUTile.new(1, 2, self),
+      PBB::LDTile.new(2, 2, self),
+      PBB::LDTile.new(3, 2, self),
+      PBB::RUTile.new(4, 2, self),
+      PBB::RUTile.new(0, 3, self),
+      PBB::LURDTile.new(1, 3, self),
+      PBB::LURDTile.new(2, 3, self),
+      PBB::LURDTile.new(3, 3, self),
+      PBB::LURDTile.new(4, 3, self),
+      PBB::LUTile.new(0, 4, self),
+      PBB::LUTile.new(1, 4, self),
+      PBB::RDTile.new(2, 4, self),
+      PBB::RDTile.new(3, 4, self),
+    ]
+    @blank_tile = PBB::BlankTile.new(4, 4, self)
     @tiles << @blank_tile
+    @tiles.shuffle!
   end
 
   def move(touched_tile)
