@@ -14,6 +14,8 @@ class PhBangBang::LURDTile < PhBangBang::Tile
     img.circle_fill(WIDTH, HEIGHT, WIDTH / 2 - 3, [0, 200, 200])
   }
 
+  define_routes({ L: :U, U: :L, D: :R, R: :D })
+
   class << self
     def image
       BASE_IMAGE

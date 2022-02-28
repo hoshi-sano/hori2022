@@ -11,10 +11,12 @@ class PhBangBang::Character < PhBangBang::Sprite
     },
   ]
   IMAGE_UPDATE_FREQ = 30
+  OUTLET_TO_INLET = { L: :R, R: :L, U: :D, D: :U }
 
   def initialize(field)
     @field = field
     @current_tile = @field.tiles.sample
+    @current_tile.enter(nil)
     super(@field.x + @current_tile.tx * WIDTH,
           @field.y + @current_tile.ty * HEIGHT,
           IMAGES.first)
@@ -24,9 +26,10 @@ class PhBangBang::Character < PhBangBang::Sprite
 
   def update
     update_image
-    # TODO: タイル内での進行位置を考慮する
-    self.x = @current_tile.x
-    self.y = @current_tile.y
+    next_x, next_y = @current_tile.next_xy
+    self.x = next_x - WIDTH / 2
+    self.y = next_y - HEIGHT / 2
+    # TODO: タイルをはみ出したときのゲームオーバー判定
   end
 
   def update_image
@@ -34,5 +37,13 @@ class PhBangBang::Character < PhBangBang::Sprite
     @update_count = @update_count % (IMAGE_UPDATE_FREQ * 2)
     idx = @update_count / IMAGE_UPDATE_FREQ
     self.image = IMAGES[idx]
+  end
+
+  def shot(other)
+    return if other == @current_tile
+    outlet = @current_tile.out
+    from = OUTLET_TO_INLET[outlet]
+    @current_tile = other
+    @current_tile.enter(from)
   end
 end

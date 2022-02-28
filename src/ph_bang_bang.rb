@@ -4,6 +4,10 @@ module PhBangBang
       @current_scene = TitleScene.new
     end
 
+    def current_scene
+      @current_scene
+    end
+
     def run
       init
 

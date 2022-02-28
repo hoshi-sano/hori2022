@@ -12,6 +12,8 @@ class PhBangBang::LUTile < PhBangBang::Tile
     img.circle_fill(0, 0, WIDTH / 2 - 3, [0, 200, 200])
   }
 
+  define_routes({ L: :U, U: :L })
+
   class << self
     def image
       BASE_IMAGE

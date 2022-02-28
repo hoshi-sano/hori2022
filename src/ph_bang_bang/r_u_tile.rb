@@ -12,6 +12,8 @@ class PhBangBang::RUTile < PhBangBang::Tile
     img.circle_fill(WIDTH, 0, WIDTH / 2 - 3, [0, 200, 200])
   }
 
+  define_routes({ U: :R, R: :U })
+
   class << self
     def image
       BASE_IMAGE
