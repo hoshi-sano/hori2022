@@ -27,9 +27,18 @@ class PhBangBang::Character < PhBangBang::Sprite
   def update
     update_image
     next_x, next_y = @current_tile.next_xy
-    self.x = next_x - WIDTH / 2
-    self.y = next_y - HEIGHT / 2
-    # TODO: タイルをはみ出したときのゲームオーバー判定
+    if next_x.nil?
+      # 次のタイルに移る
+      next_tile = @current_tile.next_tile
+      # TODO: フィールドをはみ出すとき、次のタイルがblankのときゲームオーバー判定
+      outlet = @current_tile.out
+      from = OUTLET_TO_INLET[outlet]
+      @current_tile = next_tile
+      @current_tile.enter(from)
+    else
+      self.x = next_x - WIDTH / 2
+      self.y = next_y - HEIGHT / 2
+    end
   end
 
   def update_image
@@ -40,10 +49,6 @@ class PhBangBang::Character < PhBangBang::Sprite
   end
 
   def shot(other)
-    return if other == @current_tile
-    outlet = @current_tile.out
-    from = OUTLET_TO_INLET[outlet]
-    @current_tile = other
-    @current_tile.enter(from)
+    # TODO: 何かアイテムや障害物に触れたときの処理
   end
 end

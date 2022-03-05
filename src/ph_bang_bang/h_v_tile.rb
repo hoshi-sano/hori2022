@@ -13,6 +13,12 @@ class PhBangBang::HVTile < PhBangBang::Tile
   }
 
   define_routes({ L: :R, R: :L, U: :D, D: :U })
+  define_destinations(
+    {
+      L_R: (0..80).map { |x| [x, HEIGHT / 2] },
+      U_D: (0..80).map { |y| [WIDTH / 2, y] },
+    }
+  )
 
   class << self
     def image

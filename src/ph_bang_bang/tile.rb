@@ -2,14 +2,17 @@
 class PhBangBang::Tile < PhBangBang::Sprite
   WIDTH = 80
   HEIGHT = 80
+  H_W = WIDTH / 2
+  H_H = HEIGHT / 2
   LINE_W = 2
   X_SPEED = WIDTH / 4
   Y_SPEED = HEIGHT / 4
+  PI = Math::PI
 
   attr_reader :tx, :ty, :from, :out
 
   class << self
-    attr_reader :routes, :inlets
+    attr_reader :routes, :inlets, :destinations
 
     def define_routes(routes)
       @inlets = routes.keys
@@ -17,6 +20,15 @@ class PhBangBang::Tile < PhBangBang::Sprite
       symbols = @inlets | @outlets
       raise "invalid inlet/outlet exists: #{symbols}" unless (symbols - %i[L R U D]).empty?
       @routes = routes
+    end
+
+    # 基本的には :L_R, :L_U, :D_L, :U_D, :U_R, :R_D のみ定義するものとする
+    def define_destinations(destinations)
+      @destinations = destinations
+    end
+
+    def rad(degree)
+      degree * PI / 180
     end
 
     def image
@@ -83,18 +95,43 @@ class PhBangBang::Tile < PhBangBang::Sprite
 
   def enter(from)
     from ||= self.class.inlets.first
+    PBB::Logger.debug "ENTER (#{@tx}, #{@ty})"
+    PBB::Logger.debug "  - from:#{from}"
     unless self.class.inlets.include?(from)
       PBB.current_scene.game_over!
     end
     @from = from
     @out = self.class.routes[@from]
-    # TODO: @fromと@outから移動ルートを決める
-    @destinations = (1..81).map { |x| [x, WIDTH / 2] }
+    PBB::Logger.debug "  - out:#{@out}"
+    @destinations = select_destinations.dup
+  end
+
+  def select_destinations
+    key = :"#{@from}_#{@out}"
+    return self.class.destinations[key] if self.class.destinations.key?(key)
+    reverse_key = "#{@out}_#{@from}"
+    return self.class.destinations[reverse_key].reverse if self.class.destinations.key?(reverse_key)
+    raise "invalid enter route, class:#{self.class}, from: #{@from}, out: #{@out}"
   end
 
   def next_xy
-    return unless @destinations
+    return if @destinations.empty?
     dx, dy = @destinations.shift
     [self.x + dx, self.y + dy]
+  end
+
+  def next_tile
+    next_tx, next_ty = case @out
+                       when :U
+                         [@tx, @ty - 1]
+                       when :D
+                         [@tx, @ty + 1]
+                       when :L
+                         [@tx - 1, @ty]
+                       when :R
+                         [@tx + 1, @ty]
+                       end
+    PBB::Logger.debug "calc next_tile: (#{@tx}, #{@ty}) to (#{next_tx}, #{next_ty})"
+    @field.select_tile(next_tx, next_ty)
   end
 end

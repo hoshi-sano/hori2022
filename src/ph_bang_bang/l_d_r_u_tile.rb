@@ -15,6 +15,18 @@ class PhBangBang::LDRUTile < PhBangBang::Tile
   }
 
   define_routes({ L: :D, D: :L, U: :R, R: :U })
+  define_destinations(
+    {
+      D_L: (0..80).map { |n|
+        r = rad(n * (90.0/80))
+        [(Math.cos(r) * H_W).to_i, HEIGHT - (Math.sin(r) * H_H).to_i]
+      },
+      U_R: (0..80).map { |n|
+        r = rad(180 + n * (90.0/80))
+        [WIDTH + (Math.cos(r) * H_W).to_i, -(Math.sin(r) * H_H).to_i]
+      },
+    }
+  )
 
   class << self
     def image

@@ -2,7 +2,22 @@
 class PhBangBang::Field < PhBangBang::Sprite
   attr_reader :tiles
 
-  IMAGE = Image.new(400, 400, C_WHITE)
+  WIDTH = 400
+  HEIGHT = 400
+  IMAGE = Image.new(WIDTH, HEIGHT, C_WHITE)
+  X_TILE_NUM = WIDTH / PBB::Tile::WIDTH
+  Y_TILE_NUM = HEIGHT / PBB::Tile::HEIGHT
+  TILE_TYPE_TO_NUMS = {
+    PBB::HTile => 2,
+    PBB::VTile => 2,
+    PBB::HVTile => 4,
+    PBB::LDRUTile => 4,
+    PBB::LDTile => 2,
+    PBB::RUTile => 2,
+    PBB::LURDTile => 4,
+    PBB::LUTile => 2,
+    PBB::RDTile => 2,
+  }
 
   def initialize
     x = CENTER_X - (IMAGE.width / 2)
@@ -10,35 +25,17 @@ class PhBangBang::Field < PhBangBang::Sprite
     super(x, y, IMAGE)
     self.collision_enable = false
 
-    @tiles = [
-      PBB::HTile.new(0, 0, self),
-      PBB::HTile.new(1, 0, self),
-      PBB::VTile.new(2, 0, self),
-      PBB::VTile.new(3, 0, self),
-      PBB::HVTile.new(4, 0, self),
-      PBB::HVTile.new(0, 1, self),
-      PBB::HVTile.new(1, 1, self),
-      PBB::HVTile.new(2, 1, self),
-      PBB::LDRUTile.new(3, 1, self),
-      PBB::LDRUTile.new(4, 1, self),
-      PBB::LDRUTile.new(0, 2, self),
-      PBB::LDRUTile.new(1, 2, self),
-      PBB::LDTile.new(2, 2, self),
-      PBB::LDTile.new(3, 2, self),
-      PBB::RUTile.new(4, 2, self),
-      PBB::RUTile.new(0, 3, self),
-      PBB::LURDTile.new(1, 3, self),
-      PBB::LURDTile.new(2, 3, self),
-      PBB::LURDTile.new(3, 3, self),
-      PBB::LURDTile.new(4, 3, self),
-      PBB::LUTile.new(0, 4, self),
-      PBB::LUTile.new(1, 4, self),
-      PBB::RDTile.new(2, 4, self),
-      PBB::RDTile.new(3, 4, self),
-    ]
+    tile_types = TILE_TYPE_TO_NUMS.map { |t, num| [t] * num }.flatten.shuffle
+    @tiles = []
+    X_TILE_NUM.times do |x|
+      Y_TILE_NUM.times do |y|
+        next if x == X_TILE_NUM - 1 && y == Y_TILE_NUM - 1
+        @tiles << tile_types.shift.new(x, y, self)
+      end
+    end
+
     @blank_tile = PBB::BlankTile.new(4, 4, self)
     @tiles << @blank_tile
-    @tiles.shuffle!
   end
 
   def move(touched_tile)
@@ -84,5 +81,9 @@ class PhBangBang::Field < PhBangBang::Sprite
               !range.include?(tile.ty)
       tile.ty = tile.ty + dy
     end
+  end
+
+  def select_tile(tx, ty)
+    @tiles.find { |t| t.tx == tx && t.ty == ty }
   end
 end
