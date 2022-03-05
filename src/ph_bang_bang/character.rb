@@ -22,10 +22,27 @@ class PhBangBang::Character < PhBangBang::Sprite
           IMAGES.first)
     self.collision = [WIDTH / 2, HEIGHT / 2]
     @update_count = 0
+    @speed = 10
+    @speed_count = 0
   end
 
   def update
     update_image
+    update_xy
+  end
+
+  def update_image
+    @update_count += 1
+    @update_count = @update_count % (IMAGE_UPDATE_FREQ * 2)
+    idx = @update_count / IMAGE_UPDATE_FREQ
+    self.image = IMAGES[idx]
+  end
+
+  def update_xy
+    @speed_count += 1
+    @speed_count = @speed_count % @speed
+    return unless @speed_count.zero?
+
     next_x, next_y = @current_tile.next_xy
     if next_x.nil?
       # 次のタイルに移る
@@ -39,13 +56,6 @@ class PhBangBang::Character < PhBangBang::Sprite
       self.x = next_x - WIDTH / 2
       self.y = next_y - HEIGHT / 2
     end
-  end
-
-  def update_image
-    @update_count += 1
-    @update_count = @update_count % (IMAGE_UPDATE_FREQ * 2)
-    idx = @update_count / IMAGE_UPDATE_FREQ
-    self.image = IMAGES[idx]
   end
 
   def shot(other)
