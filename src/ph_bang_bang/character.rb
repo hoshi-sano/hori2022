@@ -13,6 +13,9 @@ class PhBangBang::Character < PhBangBang::Sprite
   IMAGE_UPDATE_FREQ = 30
   OUTLET_TO_INLET = { L: :R, R: :L, U: :D, D: :U }
 
+  attr_reader :speed
+  attr_accessor :tmp_speed
+
   def initialize(field)
     @field = field
     @current_tile = @field.tiles.sample
@@ -23,6 +26,7 @@ class PhBangBang::Character < PhBangBang::Sprite
     self.collision = [WIDTH / 2, HEIGHT / 2]
     @update_count = 0
     @speed = 10
+    @tmp_speed = nil
     @speed_count = 0
   end
 
@@ -40,7 +44,7 @@ class PhBangBang::Character < PhBangBang::Sprite
 
   def update_xy
     @speed_count += 1
-    @speed_count = @speed_count % @speed
+    @speed_count = @speed_count % (@tmp_speed || @speed)
     return unless @speed_count.zero?
 
     next_x, next_y = @current_tile.next_xy

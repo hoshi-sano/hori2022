@@ -5,14 +5,19 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
   BACK_IMAGE = Image.new(30, 30, C_WHITE).tap { |img|
     img.draw_font(5, 5, "X", Font.default, C_BLACK)
   }
+  SPEEDUP_IMAGE = Image.new(50, 50, C_WHITE).tap { |img|
+    img.draw_font(10, 10, "Q", Font.default, C_BLACK)
+  }
 
   def generate_components
     super
     @field = PBB::Field.new
     @character = PBB::Character.new(@field)
     @close_button = PBB::SceneChangeButton.new(410, 10, BACK_IMAGE, self, PBB::TitleScene)
+    @speedup_button = PBB::SpeedupButton.new(200, 130, SPEEDUP_IMAGE, @character)
     @defence_components << BG
     @defence_components << @close_button
+    @defence_components << @speedup_button
     @defence_components << @field
     @defence_components.concat(@field.tiles)
     @offence_components << @character
