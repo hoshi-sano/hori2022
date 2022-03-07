@@ -34,6 +34,10 @@ class PhBangBang::Tile < PhBangBang::Sprite
     def image
       raise NotImplementedError
     end
+
+    def highlight_image
+      raise NotImplementedError
+    end
   end
 
   def initialize(x, y, field)
@@ -120,8 +124,9 @@ class PhBangBang::Tile < PhBangBang::Sprite
     [self.x + dx, self.y + dy]
   end
 
-  def next_tile
-    next_tx, next_ty = case @out
+  def next_tile(inlet = nil)
+    outlet = inlet ? self.class.routes[inlet] : @out
+    next_tx, next_ty = case outlet
                        when :U
                          [@tx, @ty - 1]
                        when :D
@@ -131,7 +136,17 @@ class PhBangBang::Tile < PhBangBang::Sprite
                        when :R
                          [@tx + 1, @ty]
                        end
-    PBB::Logger.debug "calc next_tile: (#{@tx}, #{@ty}) to (#{next_tx}, #{next_ty})"
+    PBB::Logger.debug "calc next_tile: ->#{inlet || @from}(#{@tx}, #{@ty})#{outlet}-> "\
+                      "to (#{next_tx}, #{next_ty})"
     @field.select_tile(next_tx, next_ty)
+  end
+
+  def highlight(activate = true)
+    if activate
+      PBB::Logger.debug "highlight tile: (#{@tx}, #{@ty})"
+      self.image = self.class.highlight_image
+    else
+      self.image = self.class.image
+    end
   end
 end

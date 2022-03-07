@@ -1,6 +1,7 @@
 # タイルが並ぶフィールドを表現するクラス
 class PhBangBang::Field < PhBangBang::Sprite
   attr_reader :tiles
+  attr_accessor :character
 
   WIDTH = 400
   HEIGHT = 400
@@ -45,6 +46,10 @@ class PhBangBang::Field < PhBangBang::Sprite
     elsif touched_tile.ty == @blank_tile.ty
       horizontal_move(touched_tile)
     end
+    # タイル移動後のルートチェック
+    #   * 現在の移動進路をハイライトする
+    #   * ループしていないかのチェック
+    check_routes
   end
 
   def horizontal_move(touched_tile)
@@ -85,5 +90,33 @@ class PhBangBang::Field < PhBangBang::Sprite
 
   def select_tile(tx, ty)
     @tiles.find { |t| t.tx == tx && t.ty == ty }
+  end
+
+  def check_routes
+    PBB::Logger.debug "route check start:"
+    start = @character.current_tile
+    PBB::Logger.debug "->#{start.from}(#{start.tx}, #{start.ty})#{start.out}"
+    @current_routes = [start]
+    current = start
+    current_from = current.from
+    current_out = current.out
+    while
+      next_tile = current.next_tile(current_from)
+      break if next_tile.is_a?(PBB::BlankTile) || next_tile.nil?
+      PBB::Logger.debug "->#{current_from}(#{next_tile.tx}, #{next_tile.ty})#{current_out}->"
+      current_from = PBB::Character::OUTLET_TO_INLET[current_out]
+      current_out = next_tile.class.routes[current_from]
+      # TODO: このあたりでループチェック
+      @current_routes << next_tile if current_out
+      current = next_tile
+    end
+
+    @tiles.each do |t|
+      if @current_routes.include?(t)
+        t.highlight
+      else
+        t.highlight(false)
+      end
+    end
   end
 end

@@ -13,13 +13,19 @@ class PhBangBang::Character < PhBangBang::Sprite
   IMAGE_UPDATE_FREQ = 30
   OUTLET_TO_INLET = { L: :R, R: :L, U: :D, D: :U }
 
-  attr_reader :speed
+  attr_reader :speed, :current_tile
   attr_accessor :tmp_speed
 
   def initialize(field)
     @field = field
-    @current_tile = @field.tiles.sample
-    @current_tile.enter(nil)
+    @field.character = self
+    while
+      @current_tile = @field.tiles.sample
+      next if @current_tile.is_a?(PBB::BlankTile)
+      @current_tile.enter(nil)
+      # 必ず2つ以上ルートが繋がっているタイルが初期位置になる
+      break if @current_tile.next_tile
+    end
     super(@field.x + @current_tile.tx * WIDTH,
           @field.y + @current_tile.ty * HEIGHT,
           IMAGES.first)
