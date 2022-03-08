@@ -26,6 +26,7 @@ class PhBangBang::Character < PhBangBang::Sprite
       # 必ず2つ以上ルートが繋がっているタイルが初期位置になる
       break if @current_tile.next_tile
     end
+    @field.check_routes
     super(@field.x + @current_tile.tx * WIDTH,
           @field.y + @current_tile.ty * HEIGHT,
           IMAGES.first)

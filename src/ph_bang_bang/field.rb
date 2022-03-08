@@ -103,10 +103,12 @@ class PhBangBang::Field < PhBangBang::Sprite
     while
       next_tile = current.next_tile(current_from)
       break if next_tile.is_a?(PBB::BlankTile) || next_tile.nil?
-      PBB::Logger.debug "->#{current_from}(#{next_tile.tx}, #{next_tile.ty})#{current_out}->"
+      PBB::Logger.debug "->#{current_from}"\
+                        "[#{next_tile.class.name}(#{next_tile.tx}, #{next_tile.ty})]"\
+                        "#{current_out}->"
       current_from = PBB::Character::OUTLET_TO_INLET[current_out]
       current_out = next_tile.class.routes[current_from]
-      # TODO: このあたりでループチェック
+      break if current_routes_loop_check(next_tile)
       @current_routes << next_tile if current_out
       current = next_tile
     end
@@ -118,5 +120,20 @@ class PhBangBang::Field < PhBangBang::Sprite
         t.highlight(false)
       end
     end
+  end
+
+  def current_routes_loop_check(next_tile)
+    prev_tile = @current_routes.last
+
+    looping = false
+    @current_routes.each_cons(2).each do |a, b|
+      looping = (a == prev_tile && b == next_tile)
+      if looping
+        PBB::Logger.debug "loop!"
+        break
+      end
+    end
+
+    looping
   end
 end

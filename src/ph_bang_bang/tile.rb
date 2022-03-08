@@ -14,6 +14,10 @@ class PhBangBang::Tile < PhBangBang::Sprite
   class << self
     attr_reader :routes, :inlets, :destinations
 
+    def name
+      super.split("::").last
+    end
+
     def define_routes(routes)
       @inlets = routes.keys
       @outlets = routes.values
