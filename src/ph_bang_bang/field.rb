@@ -42,17 +42,21 @@ class PhBangBang::Field < PhBangBang::Sprite
   def move(touched_tile)
     # 触れたタイルと同じ行または列に空タイルがあるか
     if touched_tile.tx == @blank_tile.tx
-      vertical_move(touched_tile)
+      moved_tiles = vertical_move(touched_tile)
     elsif touched_tile.ty == @blank_tile.ty
-      horizontal_move(touched_tile)
+      moved_tiles = horizontal_move(touched_tile)
+    else
+      moved_tiles = []
     end
     # タイル移動後のルートチェック
     #   * 現在の移動進路をハイライトする
     #   * ループしていないかのチェック
-    check_routes
+    check_routes(moved_tiles)
   end
 
   def horizontal_move(touched_tile)
+    moved = []
+
     if touched_tile.tx > @blank_tile.tx
       dx = -1
       range = (@blank_tile.tx)..(touched_tile.tx)
@@ -67,10 +71,15 @@ class PhBangBang::Field < PhBangBang::Sprite
               (tile.ty != @blank_tile.ty) ||
               !range.include?(tile.tx)
       tile.tx = tile.tx + dx
+      moved << tile
     end
+
+    moved
   end
 
   def vertical_move(touched_tile)
+    moved = []
+
     if touched_tile.ty > @blank_tile.ty
       dy = -1
       range = (@blank_tile.ty)..(touched_tile.ty)
@@ -85,14 +94,17 @@ class PhBangBang::Field < PhBangBang::Sprite
               (tile.tx != @blank_tile.tx) ||
               !range.include?(tile.ty)
       tile.ty = tile.ty + dy
+      moved << tile
     end
+
+    moved
   end
 
   def select_tile(tx, ty)
     @tiles.find { |t| t.tx == tx && t.ty == ty }
   end
 
-  def check_routes
+  def check_routes(moved_tiles = [])
     PBB::Logger.debug "route check start:"
     start = @character.current_tile
     PBB::Logger.debug "->#{start.from}(#{start.tx}, #{start.ty})#{start.out}"
@@ -108,7 +120,7 @@ class PhBangBang::Field < PhBangBang::Sprite
                         "#{current_out}->"
       current_from = PBB::Character::OUTLET_TO_INLET[current_out]
       current_out = next_tile.class.routes[current_from]
-      break if current_routes_loop_check(next_tile)
+      break if current_routes_loop_check(next_tile, moved_tiles)
       @current_routes << next_tile if current_out
       current = next_tile
     end
@@ -122,18 +134,25 @@ class PhBangBang::Field < PhBangBang::Sprite
     end
   end
 
-  def current_routes_loop_check(next_tile)
+  def current_routes_loop_check(next_tile, moved_tiles)
     prev_tile = @current_routes.last
 
     looping = false
     @current_routes.each_cons(2).each do |a, b|
       looping = (a == prev_tile && b == next_tile)
       if looping
-        PBB::Logger.debug "loop!"
+        # ループを構成するタイルが今回動かされたものだった場合、
+        # すなわち、今初めてループができた場合、ペナルティを課す
+        loop_penalty if @current_routes.find { |r| moved_tiles.include?(r) }
         break
       end
     end
 
     looping
+  end
+
+  def loop_penalty
+    PBB::Logger.debug "loop penalty!"
+    # TODO
   end
 end
