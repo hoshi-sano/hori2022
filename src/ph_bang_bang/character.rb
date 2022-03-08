@@ -14,9 +14,10 @@ class PhBangBang::Character < PhBangBang::Sprite
   OUTLET_TO_INLET = { L: :R, R: :L, U: :D, D: :U }
 
   attr_reader :speed, :current_tile
-  attr_accessor :tmp_speed
+  attr_accessor :tmp_speed, :game_over
 
-  def initialize(field)
+  def initialize(scene, field)
+    @scene = scene
     @field = field
     @field.character = self
     while
@@ -35,9 +36,11 @@ class PhBangBang::Character < PhBangBang::Sprite
     @speed = 10
     @tmp_speed = nil
     @speed_count = 0
+    @game_over = false
   end
 
   def update
+    return if @game_over
     update_image
     update_xy
   end
@@ -58,11 +61,17 @@ class PhBangBang::Character < PhBangBang::Sprite
     if next_x.nil?
       # 次のタイルに移る
       next_tile = @current_tile.next_tile
-      # TODO: フィールドをはみ出すとき、次のタイルがblankのときゲームオーバー判定
+      # フィールドをはみ出すとき、次のタイルがblankのときゲームオーバー判定
+      unless next_tile
+        @game_over = true
+        @scene.game_over!
+        return
+      end
       outlet = @current_tile.out
       from = OUTLET_TO_INLET[outlet]
       @current_tile = next_tile
       @current_tile.enter(from)
+      @scene.add_score(100) # TODO: スピード等を考慮した点数にする
     else
       self.x = next_x - WIDTH / 2
       self.y = next_y - HEIGHT / 2

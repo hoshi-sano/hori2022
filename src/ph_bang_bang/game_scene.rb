@@ -12,12 +12,14 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
   def generate_components
     super
     @field = PBB::Field.new
-    @character = PBB::Character.new(@field)
+    @character = PBB::Character.new(self, @field)
     @close_button = PBB::SceneChangeButton.new(410, 10, BACK_IMAGE, self, PBB::TitleScene)
     @speedup_button = PBB::SpeedupButton.new(200, 130, SPEEDUP_IMAGE, @character)
+    @score_board = PBB::ScoreBoard.new(75, 50)
     @defence_components << BG
     @defence_components << @close_button
     @defence_components << @speedup_button
+    @defence_components << @score_board
     @defence_components << @field
     @defence_components.concat(@field.tiles)
     @offence_components << @character
@@ -25,7 +27,9 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
 
   def play
     if @game_over
-      PBB.change_scene(@next_scene_class) if @finalized
+      PBB.change_scene(@next_scene_class, @scene_change_arg1) if @finalized
+      @game_over_effect.update
+      change_scene(PBB::ResultScene, @score_board.score) if @game_over_effect.finished?
       draw_components
       check_keys
       DXOpal::Sprite.check(@offence_components, [@close_button])
@@ -35,6 +39,14 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
   end
 
   def game_over!
+    PBB::Logger.debug "GameScene#game_over! called."
     @game_over = true
+    @character.game_over = true
+    @game_over_effect = PBB::GameOverEffect.new
+    @defence_components << @game_over_effect
+  end
+
+  def add_score(int)
+    @score_board.score += int
   end
 end

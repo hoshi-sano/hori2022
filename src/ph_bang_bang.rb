@@ -18,8 +18,8 @@ module PhBangBang
       end
     end
 
-    def change_scene(next_scene_class)
-      @current_scene = next_scene_class.new
+    def change_scene(next_scene_class, arg1 = nil)
+      @current_scene = next_scene_class.new(arg1)
     end
   end
 end
@@ -32,6 +32,7 @@ require_remote "src/ph_bang_bang/input.rb"
 require_remote "src/ph_bang_bang/base_scene.rb"
 require_remote "src/ph_bang_bang/title_scene.rb"
 require_remote "src/ph_bang_bang/game_scene.rb"
+require_remote "src/ph_bang_bang/result_scene.rb"
 require_remote "src/ph_bang_bang/scene_change_button.rb"
 require_remote "src/ph_bang_bang/speedup_button.rb"
 require_remote "src/ph_bang_bang/tile.rb"
@@ -47,3 +48,5 @@ require_remote "src/ph_bang_bang/r_u_tile.rb"
 require_remote "src/ph_bang_bang/v_tile.rb"
 require_remote "src/ph_bang_bang/field.rb"
 require_remote "src/ph_bang_bang/character.rb"
+require_remote "src/ph_bang_bang/score_board.rb"
+require_remote "src/ph_bang_bang/game_over_effect.rb"

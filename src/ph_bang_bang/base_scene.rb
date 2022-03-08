@@ -1,6 +1,6 @@
 # 各シーンクラスのベースとなるクラス
 class PhBangBang::BaseScene
-  def initialize
+  def initialize(arg1 = nil)
     @offence_components = []
     @defence_components = []
     generate_components
@@ -10,7 +10,7 @@ class PhBangBang::BaseScene
   end
 
   def play
-    PBB.change_scene(@next_scene_class) if @finalized
+    PBB.change_scene(@next_scene_class, @scene_change_arg1) if @finalized
     update_components
     draw_components
     check_keys
@@ -43,8 +43,9 @@ class PhBangBang::BaseScene
     end
   end
 
-  def change_scene(next_scene_class)
+  def change_scene(next_scene_class, arg1 = nil)
     @next_scene_class = next_scene_class
+    @scene_change_arg1 = arg1
     finalize
   end
 

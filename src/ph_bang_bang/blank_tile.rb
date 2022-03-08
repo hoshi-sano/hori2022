@@ -20,6 +20,10 @@ class PhBangBang::BlankTile < PhBangBang::Tile
     self.y = @field.y + @ty * HEIGHT
   end
 
+  def enter(_)
+    PBB.current_scene.game_over!
+  end
+
   def hit
   end
 end

@@ -12,7 +12,7 @@ class PhBangBang::Tile < PhBangBang::Sprite
   attr_reader :tx, :ty, :from, :out
 
   class << self
-    attr_reader :routes, :inlets, :destinations
+    attr_reader :routes, :inlets, :outlets, :destinations
 
     def name
       super.split("::").last
@@ -107,6 +107,7 @@ class PhBangBang::Tile < PhBangBang::Sprite
     PBB::Logger.debug "  - from:#{from}"
     unless self.class.inlets.include?(from)
       PBB.current_scene.game_over!
+      return
     end
     @from = from
     @out = self.class.routes[@from]
