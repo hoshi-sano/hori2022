@@ -1,6 +1,6 @@
 # タイルが並ぶフィールドを表現するクラス
 class PhBangBang::Field < PhBangBang::Sprite
-  attr_reader :tiles
+  attr_reader :tiles, :scene
   attr_accessor :character
 
   WIDTH = 400
@@ -20,7 +20,8 @@ class PhBangBang::Field < PhBangBang::Sprite
     PBB::RDTile => 2,
   }
 
-  def initialize
+  def initialize(scene)
+    @scene = scene
     x = CENTER_X - (IMAGE.width / 2)
     y = CENTER_Y - (IMAGE.height / 2)
     super(x, y, IMAGE)
@@ -153,6 +154,8 @@ class PhBangBang::Field < PhBangBang::Sprite
 
   def loop_penalty
     PBB::Logger.debug "loop penalty!"
-    # TODO
+    tile = (@current_routes - [@character.current_tile]).select(&:no_object?).sample
+    tile ||= (@tiles - [@character.current_tile]).select(&:no_object?).sample
+    tile.set_object(PBB::Bomb)
   end
 end

@@ -9,7 +9,7 @@ class PhBangBang::Tile < PhBangBang::Sprite
   Y_SPEED = HEIGHT / 4
   PI = Math::PI
 
-  attr_reader :tx, :ty, :from, :out
+  attr_reader :tx, :ty, :from, :out, :field
 
   class << self
     attr_reader :routes, :inlets, :outlets, :destinations
@@ -69,10 +69,23 @@ class PhBangBang::Tile < PhBangBang::Sprite
     @dest_y = @field.y + @ty * HEIGHT
   end
 
+  def draw
+    super
+    @obj.draw if @obj
+  end
+
   def update
     super
     update_x
     update_y
+    if @obj
+      @obj.update(@moving)
+      if @obj.vanished?
+        @obj = nil
+      elsif obj_access?
+        @obj.touch
+      end
+    end
   end
 
   def update_x
@@ -93,6 +106,10 @@ class PhBangBang::Tile < PhBangBang::Sprite
       @dest_y = nil
       @moving = false
     end
+  end
+
+  def obj_access?
+    @destinations && (65..70).include?(@destinations.count)
   end
 
   def hit(other)
@@ -153,5 +170,17 @@ class PhBangBang::Tile < PhBangBang::Sprite
     else
       self.image = self.class.image
     end
+  end
+
+  def set_object(obj_class)
+    @obj = obj_class.new(self)
+  end
+
+  def has_object?
+    !!@obj
+  end
+
+  def no_object?
+    !@obj
   end
 end

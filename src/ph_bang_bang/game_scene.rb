@@ -11,7 +11,7 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
 
   def generate_components
     super
-    @field = PBB::Field.new
+    @field = PBB::Field.new(self)
     @character = PBB::Character.new(self, @field)
     @close_button = PBB::SceneChangeButton.new(410, 10, BACK_IMAGE, self, PBB::TitleScene)
     @speedup_button = PBB::SpeedupButton.new(200, 130, SPEEDUP_IMAGE, @character)
