@@ -1,7 +1,8 @@
 module PhBangBang
   class << self
     def init
-      @current_scene = TitleScene.new
+      DXOpal::Sound.register(:title, "sounds/title.mp3")
+      @current_scene = CreditScene.new
     end
 
     def current_scene
@@ -20,16 +21,19 @@ module PhBangBang
 
     def change_scene(next_scene_class, arg1 = nil)
       @current_scene = next_scene_class.new(arg1)
+      @current_scene.scene_changed
     end
   end
 end
 PBB = PhBangBang # shortcut
 
+require_remote "src/monkey_patches/001_enable_sound_loop.rb"
 require_remote "src/ph_bang_bang/logger.rb"
 require_remote "src/ph_bang_bang/sprite.rb"
 require_remote "src/ph_bang_bang/touch_circle.rb"
 require_remote "src/ph_bang_bang/input.rb"
 require_remote "src/ph_bang_bang/base_scene.rb"
+require_remote "src/ph_bang_bang/credit_scene.rb"
 require_remote "src/ph_bang_bang/title_scene.rb"
 require_remote "src/ph_bang_bang/game_scene.rb"
 require_remote "src/ph_bang_bang/result_scene.rb"

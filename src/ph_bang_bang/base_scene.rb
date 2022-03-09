@@ -49,6 +49,10 @@ class PhBangBang::BaseScene
     finalize
   end
 
+  # シーンチェンジの直後に1度だけ呼ばれるメソッド
+  def scene_changed
+  end
+
   def finalize
     @finalized = true
   end

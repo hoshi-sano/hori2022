@@ -16,4 +16,13 @@ class PhBangBang::TitleScene < PhBangBang::BaseScene
     @defence_components << TITLE_SPRITE
     @defence_components << PBB::SceneChangeButton.new(50, 450, START_IMAGE, self, PBB::GameScene)
   end
+
+  def scene_changed
+    DXOpal::Sound[:title].loop_play
+  end
+
+  def finalize
+    DXOpal::Sound[:title].stop
+    super
+  end
 end
