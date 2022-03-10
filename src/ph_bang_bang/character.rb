@@ -80,11 +80,15 @@ class PhBangBang::Character < PhBangBang::Sprite
     from = OUTLET_TO_INLET[outlet]
     @current_tile = next_tile
     @current_tile.enter(from)
-    @scene.add_score(100) # TODO: スピード等を考慮した点数にする
+    @scene.add_score(100 * (tmp_accele + 1))
   end
 
   def accele
     INITIAL_SPEED - @speed
+  end
+
+  def tmp_accele
+    INITIAL_SPEED - (@tmp_speed || @speed)
   end
 
   def shot(other)
