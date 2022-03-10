@@ -49,6 +49,7 @@ class PhBangBang::Field < PhBangBang::Sprite
     else
       moved_tiles = []
     end
+    moved_tiles.each(&:moved_post_process)
     # タイル移動後のルートチェック
     #   * 現在の移動進路をハイライトする
     #   * ループしていないかのチェック

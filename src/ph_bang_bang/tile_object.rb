@@ -19,4 +19,7 @@ class PhBangBang::TileObject < PhBangBang::Sprite
   def touch
     self.vanish
   end
+
+  def moved
+  end
 end

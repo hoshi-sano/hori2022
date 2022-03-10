@@ -183,4 +183,9 @@ class PhBangBang::Tile < PhBangBang::Sprite
   def no_object?
     !@obj
   end
+
+  # 移動された際の後処理
+  def moved_post_process
+    @obj.moved if @obj
+  end
 end
