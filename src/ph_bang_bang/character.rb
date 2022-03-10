@@ -12,12 +12,18 @@ class PhBangBang::Character < PhBangBang::Sprite
   ]
   IMAGE_UPDATE_FREQ = 30
   OUTLET_TO_INLET = { L: :R, R: :L, U: :D, D: :U }
+  INITIAL_SPEED = 10
 
   attr_reader :speed, :current_tile
   attr_accessor :tmp_speed, :game_over
 
   def initialize(scene, field)
     @scene = scene
+    @update_count = 0
+    @speed = INITIAL_SPEED
+    @tmp_speed = nil
+    @speed_count = 0
+    @game_over = false
     @field = field
     @field.character = self
     while
@@ -32,11 +38,6 @@ class PhBangBang::Character < PhBangBang::Sprite
           @field.y + @current_tile.ty * HEIGHT,
           IMAGES.first)
     self.collision = [WIDTH / 2, HEIGHT / 2]
-    @update_count = 0
-    @speed = 10
-    @tmp_speed = nil
-    @speed_count = 0
-    @game_over = false
   end
 
   def update
@@ -67,15 +68,23 @@ class PhBangBang::Character < PhBangBang::Sprite
         @scene.game_over!
         return
       end
-      outlet = @current_tile.out
-      from = OUTLET_TO_INLET[outlet]
-      @current_tile = next_tile
-      @current_tile.enter(from)
-      @scene.add_score(100) # TODO: スピード等を考慮した点数にする
+      enter(next_tile)
     else
       self.x = next_x - WIDTH / 2
       self.y = next_y - HEIGHT / 2
     end
+  end
+
+  def enter(next_tile)
+    outlet = @current_tile.out
+    from = OUTLET_TO_INLET[outlet]
+    @current_tile = next_tile
+    @current_tile.enter(from)
+    @scene.add_score(100) # TODO: スピード等を考慮した点数にする
+  end
+
+  def accele
+    INITIAL_SPEED - @speed
   end
 
   def shot(other)

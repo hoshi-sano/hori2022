@@ -1,7 +1,6 @@
 # タイルが並ぶフィールドを表現するクラス
 class PhBangBang::Field < PhBangBang::Sprite
-  attr_reader :tiles, :scene
-  attr_accessor :character
+  attr_reader :tiles, :scene, :character
 
   WIDTH = 400
   HEIGHT = 400
@@ -19,6 +18,8 @@ class PhBangBang::Field < PhBangBang::Sprite
     PBB::LUTile => 2,
     PBB::RDTile => 2,
   }
+  MOVE_EFFECT_FREQ = 7
+  MOVE_EFFECT_BUFFER = 4
 
   def initialize(scene)
     @scene = scene
@@ -40,6 +41,28 @@ class PhBangBang::Field < PhBangBang::Sprite
     @tiles << @blank_tile
   end
 
+  def character=(c)
+    @character = c
+    reset_move_effect_count
+  end
+
+  def reset_move_effect_count
+    @move_effect_count = MOVE_EFFECT_FREQ +
+                         @character.accele +
+                         rand(MOVE_EFFECT_BUFFER)
+  end
+
+  # 一定回数タイルを動かしたらフィールドに何かアクションを起こす
+  def move_effect
+    @move_effect_count -= 1
+    return if @move_effect_count > 0
+
+    random_tile = available_tiles.sample
+    random_tile.set_object(PBB::Bomb) if random_tile
+
+    reset_move_effect_count
+  end
+
   def move(touched_tile)
     # 触れたタイルと同じ行または列に空タイルがあるか
     if touched_tile.tx == @blank_tile.tx
@@ -50,6 +73,9 @@ class PhBangBang::Field < PhBangBang::Sprite
       moved_tiles = []
     end
     moved_tiles.each(&:moved_post_process)
+
+    move_effect if moved_tiles.any?
+
     # タイル移動後のルートチェック
     #   * 現在の移動進路をハイライトする
     #   * ループしていないかのチェック
@@ -156,7 +182,12 @@ class PhBangBang::Field < PhBangBang::Sprite
   def loop_penalty
     PBB::Logger.debug "loop penalty!"
     tile = (@current_routes - [@character.current_tile]).select(&:no_object?).sample
-    tile ||= (@tiles - [@character.current_tile]).select(&:no_object?).sample
+    tile ||= available_tiles.sample
     tile.set_object(PBB::Bomb)
+  end
+
+  # 現在キャラクターやオブジェクトが乗っていない、blankでないタイルを返す
+  def available_tiles
+    (@tiles - [@character.current_tile, @blank_tile]).select(&:no_object?)
   end
 end
