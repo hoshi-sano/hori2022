@@ -17,7 +17,6 @@ class PhBangBang::GameOverEffect < PhBangBang::Sprite
     return if finished?
     super
     @count += 1
-puts @count
     @finished = true if @count > DISPLAY_TIME
   end
 
