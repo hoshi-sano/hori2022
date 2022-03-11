@@ -2,7 +2,7 @@
 class PhBangBang::TileObject < PhBangBang::Sprite
   def initialize(tile)
     @tile = tile
-    image = self.class::IMAGE
+    image = self.class.image
     @dx = (@tile.width / 2) - (image.width / 2)
     @dy = (@tile.height / 2) - (image.height / 2)
     super(@tile.x + @dx, @tile.y + @dy, image)

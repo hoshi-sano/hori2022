@@ -9,9 +9,8 @@ module PhBangBang
     end
 
     def run
-      init
-
       Window.load_resources do
+        init
         Window.loop do
           @current_scene.play
         end
@@ -29,6 +28,9 @@ PBB = PhBangBang # shortcut
 DXOpal::Sound.register(:title, "sounds/title.mp3")
 [
   :back_button,
+  :bomb_01,
+  :bomb_02,
+  :bomb_03,
   :energy_gage,
   :energy_gage_unit,
   :game_bg,
@@ -40,6 +42,7 @@ DXOpal::Sound.register(:title, "sounds/title.mp3")
   :l_d_r_u_tile_HL,
   :l_d_tile,
   :l_d_tile_HL,
+  :logo,
   :l_u_r_d_tile,
   :l_u_r_d_tile_HL,
   :l_u_tile,

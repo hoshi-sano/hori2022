@@ -2,15 +2,12 @@
 class PhBangBang::Bomb < PhBangBang::TileObject
   WIDTH = 40
   HEIGHT = 40
-  IMAGE = Image.new(WIDTH, HEIGHT).tap { |img|
-    img.circle_fill(WIDTH / 2, HEIGHT / 2, WIDTH / 2, C_BLACK)
-  }
-  DAMAGED_IMAGE_1 = Image.new(WIDTH, HEIGHT).tap { |img|
-    img.circle_fill(WIDTH / 2, HEIGHT / 2, WIDTH / 2, [200, 200, 200])
-  }
-  DAMAGED_IMAGE_2 = Image.new(WIDTH, HEIGHT).tap { |img|
-    img.circle_fill(WIDTH / 2, HEIGHT / 2, WIDTH / 2, [10, 100, 100])
-  }
+
+  class << self
+    def image
+      DXOpal::Image[:bomb_01]
+    end
+  end
 
   def initialize
     super
@@ -28,9 +25,9 @@ class PhBangBang::Bomb < PhBangBang::TileObject
     @ttl -= 1
     case @ttl
     when 2
-      self.image = DAMAGED_IMAGE_1
+      self.image = DXOpal::Image[:bomb_02]
     when 1
-      self.image = DAMAGED_IMAGE_2
+      self.image = DXOpal::Image[:bomb_03]
     when 0
       self.vanish
     end
