@@ -15,7 +15,7 @@ class PhBangBang::Character < PhBangBang::Sprite
   INITIAL_SPEED = 10
 
   attr_reader :speed, :current_tile
-  attr_accessor :tmp_speed, :game_over
+  attr_accessor :game_over, :energy_gage
 
   def initialize(scene, field)
     @scene = scene
@@ -38,6 +38,16 @@ class PhBangBang::Character < PhBangBang::Sprite
           @field.y + @current_tile.ty * HEIGHT,
           IMAGES.first)
     self.collision = [WIDTH / 2, HEIGHT / 2]
+  end
+
+  def speed_up!
+    @speed -= 1
+    @energy_gage.update_gage
+  end
+
+  def tmp_speed=(v)
+    @tmp_speed = v
+    @energy_gage.update_gage
   end
 
   def update
@@ -83,10 +93,13 @@ class PhBangBang::Character < PhBangBang::Sprite
     @scene.add_score(100 * (tmp_accele + 1))
   end
 
+  # 加速状態（初期速度から現在の速度を引いた値）
   def accele
     INITIAL_SPEED - @speed
   end
 
+  # 加速状態
+  # 一時的にスピードアップしている状態も加味する
   def tmp_accele
     INITIAL_SPEED - (@tmp_speed || @speed)
   end

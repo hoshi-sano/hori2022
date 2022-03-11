@@ -13,14 +13,16 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
     super
     @field = PBB::Field.new(self)
     @character = PBB::Character.new(self, @field)
+    @energy_gage = PBB::EnergyGage.new(@character)
     @close_button = PBB::SceneChangeButton.new(410, 10, BACK_IMAGE, self, PBB::TitleScene)
     @speedup_button = PBB::SpeedupButton.new(200, 130, SPEEDUP_IMAGE, @character)
-    @score_board = PBB::ScoreBoard.new(75, 50)
+    @score_board = PBB::ScoreBoard.new(75, 50, @character)
     @defence_components << BG
     @defence_components << @close_button
     @defence_components << @speedup_button
     @defence_components << @score_board
     @defence_components << @field
+    @defence_components << @energy_gage
     @defence_components.concat(@field.tiles)
     @offence_components << @character
   end

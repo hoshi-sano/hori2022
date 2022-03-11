@@ -8,7 +8,7 @@ class PhBangBang::ResultScene < PhBangBang::BaseScene
 
   def initialize(score)
     super(nil)
-    @score_board = PBB::ScoreBoard.new(75, 500, score)
+    @score_board = PBB::ScoreBoard.new(75, 500, nil, score)
     @close_button = PBB::SceneChangeButton.new(410, 10, BACK_IMAGE, self, PBB::TitleScene)
     @defence_components << BG
     @defence_components << @score_board
