@@ -1,6 +1,5 @@
 # ゲーム中の得点の記録と表示を担うクラス
 class PhBangBang::ScoreBoard < PhBangBang::Sprite
-  IMAGE = Image.new(300, 50, C_BLACK)
   STR_FORMAT = 'SCORE: %010d'
   LEVEL_MAP = {
     2 => 1000,
@@ -12,11 +11,13 @@ class PhBangBang::ScoreBoard < PhBangBang::Sprite
     8 => 200000,
     9 => 300000,
   }
+  OFFSET_X = 15
+  OFFSET_Y = 15
 
   attr_accessor :score
 
   def initialize(x, y, character, score = 0)
-    super(x, y, IMAGE)
+    super(x, y, DXOpal::Image[:score_board])
     @character = character
     @score = score
     @current_level = 1
@@ -38,6 +39,9 @@ class PhBangBang::ScoreBoard < PhBangBang::Sprite
 
   def draw
     super
-    DXOpal::Window.draw_font(self.x, self.y, score_str, Font.default)
+    DXOpal::Window.draw_font(self.x + OFFSET_X,
+                             self.y + OFFSET_Y,
+                             score_str,
+                             Font.default)
   end
 end

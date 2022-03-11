@@ -1,19 +1,17 @@
 # キャラクターのエネルギー状態を表示するためのクラス
 # エネルギー状態はキャラクターの加速状態と同義
 class PhBangBang::EnergyGage < PhBangBang::Sprite
-  BG_IMAGE = Image.new(310, 60, C_BLACK)
-  GAGE_UNIT_IMAGE = Image.new(30, 50, [100, 100, 0]).tap { |img|
-    img.box_fill(1, 1, 29, 49, [200, 200, 0])
-  }
-  OFFSET_X = 5
-  OFFSET_Y = 5
+  OFFSET_X = 50
+  OFFSET_Y = 8
 
   def initialize(character)
-    super(75, 650, BG_IMAGE)
+    super(90, 610, DXOpal::Image[:energy_gage])
     @character = character
     @character.energy_gage = self
     @gage = (0..9).map { |n|
-      PBB::Sprite.new(self.x + OFFSET_X + n * 30, self.y + OFFSET_Y, GAGE_UNIT_IMAGE)
+      PBB::Sprite.new(self.x + OFFSET_X + n * 22,
+                      self.y + OFFSET_Y,
+                      DXOpal::Image[:energy_gage_unit])
     }
     update_gage
   end

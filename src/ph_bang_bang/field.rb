@@ -4,7 +4,7 @@ class PhBangBang::Field < PhBangBang::Sprite
 
   WIDTH = 400
   HEIGHT = 400
-  IMAGE = Image.new(WIDTH, HEIGHT, C_WHITE)
+  IMAGE = Image.new(WIDTH, HEIGHT)
   X_TILE_NUM = WIDTH / PBB::Tile::WIDTH
   Y_TILE_NUM = HEIGHT / PBB::Tile::HEIGHT
   TILE_TYPE_TO_NUMS = {

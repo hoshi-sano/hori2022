@@ -1,7 +1,6 @@
 module PhBangBang
   class << self
     def init
-      DXOpal::Sound.register(:title, "sounds/title.mp3")
       @current_scene = CreditScene.new
     end
 
@@ -26,6 +25,39 @@ module PhBangBang
   end
 end
 PBB = PhBangBang # shortcut
+
+DXOpal::Sound.register(:title, "sounds/title.mp3")
+[
+  :back_button,
+  :energy_gage,
+  :energy_gage_unit,
+  :game_bg,
+  :h_tile,
+  :h_tile_HL,
+  :h_v_tile,
+  :h_v_tile_HL,
+  :l_d_r_u_tile,
+  :l_d_r_u_tile_HL,
+  :l_d_tile,
+  :l_d_tile_HL,
+  :l_u_r_d_tile,
+  :l_u_r_d_tile_HL,
+  :l_u_tile,
+  :l_u_tile_HL,
+  :ph_01,
+  :ph_02,
+  :r_d_tile,
+  :r_d_tile_HL,
+  :r_u_tile,
+  :r_u_tile_HL,
+  :score_board,
+  :speedup_button,
+  :speedup_button_HL,
+  :v_tile,
+  :v_tile_HL,
+].each do |key|
+  DXOpal::Image.register(key, "images/#{key}.png")
+end
 
 require_remote "src/monkey_patches/001_enable_sound_loop.rb"
 require_remote "src/ph_bang_bang/logger.rb"

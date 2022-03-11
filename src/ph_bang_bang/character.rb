@@ -2,15 +2,7 @@
 class PhBangBang::Character < PhBangBang::Sprite
   WIDTH = PBB::Tile::WIDTH
   HEIGHT = PBB::Tile::HEIGHT
-  IMAGES = [
-    Image.new(WIDTH, HEIGHT).tap { |img|
-      img.circle_fill(WIDTH / 2, HEIGHT / 2, 15, C_RED)
-    },
-    Image.new(WIDTH, HEIGHT).tap { |img|
-      img.circle_fill(WIDTH / 2, HEIGHT / 2, 12, C_RED)
-    },
-  ]
-  IMAGE_UPDATE_FREQ = 30
+  IMAGE_UPDATE_FREQ = 45
   OUTLET_TO_INLET = { L: :R, R: :L, U: :D, D: :U }
   INITIAL_SPEED = 10
 
@@ -34,9 +26,10 @@ class PhBangBang::Character < PhBangBang::Sprite
       break if @current_tile.next_tile
     end
     @field.check_routes
+    @images = [DXOpal::Image[:ph_01], DXOpal::Image[:ph_02]]
     super(@field.x + @current_tile.tx * WIDTH,
           @field.y + @current_tile.ty * HEIGHT,
-          IMAGES.first)
+          @images.first)
     self.collision = [WIDTH / 2, HEIGHT / 2]
   end
 
@@ -60,7 +53,7 @@ class PhBangBang::Character < PhBangBang::Sprite
     @update_count += 1
     @update_count = @update_count % (IMAGE_UPDATE_FREQ * 2)
     idx = @update_count / IMAGE_UPDATE_FREQ
-    self.image = IMAGES[idx]
+    self.image = @images[idx]
   end
 
   def update_xy

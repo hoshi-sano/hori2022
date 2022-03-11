@@ -23,11 +23,11 @@ class PhBangBang::VTile < PhBangBang::Tile
 
   class << self
     def image
-      BASE_IMAGE
+      DXOpal::Image[:v_tile]
     end
 
     def highlight_image
-      HL_IMAGE
+      DXOpal::Image[:v_tile_HL]
     end
   end
 end

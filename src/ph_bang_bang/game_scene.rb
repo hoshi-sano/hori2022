@@ -1,23 +1,17 @@
 # ゲームシーン管理用クラス
 class PhBangBang::GameScene < PhBangBang::BaseScene
-  BG = PBB::Sprite.new(0, 0, Image.new(Window.width, Window.height, [0, 200, 200])).
-         tap { |bg| bg.collision_enable = false }
-  BACK_IMAGE = Image.new(30, 30, C_WHITE).tap { |img|
-    img.draw_font(5, 5, "X", Font.default, C_BLACK)
-  }
-  SPEEDUP_IMAGE = Image.new(50, 50, C_WHITE).tap { |img|
-    img.draw_font(10, 10, "Q", Font.default, C_BLACK)
-  }
-
   def generate_components
     super
+    bg = PBB::Sprite.new(0, 0, DXOpal::Image[:game_bg]).tap { |b| b.collision_enable = false }
     @field = PBB::Field.new(self)
     @character = PBB::Character.new(self, @field)
     @energy_gage = PBB::EnergyGage.new(@character)
-    @close_button = PBB::SceneChangeButton.new(410, 10, BACK_IMAGE, self, PBB::TitleScene)
-    @speedup_button = PBB::SpeedupButton.new(200, 130, SPEEDUP_IMAGE, @character)
-    @score_board = PBB::ScoreBoard.new(75, 50, @character)
-    @defence_components << BG
+    @close_button =
+      PBB::SceneChangeButton.new(400, 10, DXOpal::Image[:back_button], self, PBB::TitleScene)
+    @speedup_button =
+      PBB::SpeedupButton.new(30, 610, DXOpal::Image[:speedup_button], @character)
+    @score_board = PBB::ScoreBoard.new(85, 50, @character)
+    @defence_components << bg
     @defence_components << @close_button
     @defence_components << @speedup_button
     @defence_components << @score_board
