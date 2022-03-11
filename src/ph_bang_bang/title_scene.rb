@@ -9,12 +9,20 @@ class PhBangBang::TitleScene < PhBangBang::BaseScene
   START_IMAGE = Image.new(350, 100, C_WHITE).tap { |img|
     img.draw_font(135, 30, "START", Font.default, C_BLACK)
   }
+  STORY_IMAGE = Image.new(350, 100, C_WHITE).tap { |img|
+    img.draw_font(135, 30, "STORY", Font.default, C_BLACK)
+  }
+  CREDIT_IMAGE = Image.new(350, 100, C_WHITE).tap { |img|
+    img.draw_font(135, 30, "CREDIT", Font.default, C_BLACK)
+  }
 
   def generate_components
     super
     @defence_components << BG
     @defence_components << TITLE_SPRITE
     @defence_components << PBB::SceneChangeButton.new(50, 450, START_IMAGE, self, PBB::GameScene)
+    @defence_components << PBB::SceneChangeButton.new(50, 560, STORY_IMAGE, self, PBB::SlideScene, :story)
+    @defence_components << PBB::SceneChangeButton.new(50, 670, CREDIT_IMAGE, self, PBB::SlideScene, :credit)
   end
 
   def scene_changed
