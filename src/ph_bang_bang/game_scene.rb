@@ -37,10 +37,16 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
     end
   end
 
+  def scene_changed
+    DXOpal::Sound[:game_play].loop_play
+  end
+
   def game_over!
     PBB::Logger.debug "GameScene#game_over! called."
     @game_over = true
     @character.game_over = true
+    DXOpal::Sound[:game_play].stop
+    DXOpal::Sound[:water].play
     @game_over_effect = PBB::GameOverEffect.new
     @offence_components << @game_over_effect
   end

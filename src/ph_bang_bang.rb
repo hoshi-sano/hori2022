@@ -29,8 +29,11 @@ PBB = PhBangBang # shortcut
   [:cheer_1, :mp3],
   [:cheer_2, :mp3],
   [:cheer_3, :mp3],
+  [:game_over, :mp3],
+  [:game_play, :mp3],
   [:scratch, :mp3],
   [:title, :mp3],
+  [:water, :mp3],
 ].each do |key, ext|
   DXOpal::Sound.register(key, "sounds/#{key}.#{ext}")
 end

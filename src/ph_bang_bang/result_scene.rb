@@ -15,4 +15,8 @@ class PhBangBang::ResultScene < PhBangBang::BaseScene
     @defence_components << @close_button
     @defence_components << @share_button
   end
+
+  def scene_changed
+    DXOpal::Sound[:game_over].play
+  end
 end
