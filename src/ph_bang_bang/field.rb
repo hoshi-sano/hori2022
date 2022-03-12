@@ -181,6 +181,7 @@ class PhBangBang::Field < PhBangBang::Sprite
 
   def loop_penalty
     PBB::Logger.debug "loop penalty!"
+    @scene.activate_loop_effect
     tile = (@current_routes - [@character.current_tile]).select(&:no_object?).sample
     tile ||= available_tiles.sample
     tile.set_object(PBB::Bomb)

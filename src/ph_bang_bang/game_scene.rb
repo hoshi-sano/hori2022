@@ -11,6 +11,7 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
     @speedup_button =
       PBB::SpeedupButton.new(30, 610, DXOpal::Image[:speedup_button], @character)
     @score_board = PBB::ScoreBoard.new(85, 50, @character)
+    @loop_effect = PBB::LoopEffect.new
     @defence_components << bg
     @defence_components << @close_button
     @defence_components << @speedup_button
@@ -19,6 +20,7 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
     @defence_components << @energy_gage
     @defence_components.concat(@field.tiles)
     @offence_components << @character
+    @offence_components << @loop_effect
   end
 
   def play
@@ -44,5 +46,9 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
 
   def add_score(int)
     @score_board.score += int
+  end
+
+  def activate_loop_effect
+    @loop_effect.activate
   end
 end
