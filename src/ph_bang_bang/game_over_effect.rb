@@ -2,15 +2,13 @@
 class PhBangBang::GameOverEffect < PhBangBang::Sprite
   WIDTH = 300
   HEIGHT = 300
-  IMAGE = Image.new(WIDTH, HEIGHT, C_WHITE).tap { |img|
-    img.draw_font(100, 120, "Oops!!!", Font.default, C_BLACK)
-  }
   DISPLAY_TIME = 120
 
   def initialize
-    super(75, 150, IMAGE)
+    super(3, 150, DXOpal::Image[:oops])
     @count = 0
     @finished = false
+    collision_enable = false
   end
 
   def update

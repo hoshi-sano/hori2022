@@ -39,7 +39,7 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
     @game_over = true
     @character.game_over = true
     @game_over_effect = PBB::GameOverEffect.new
-    @defence_components << @game_over_effect
+    @offence_components << @game_over_effect
   end
 
   def add_score(int)

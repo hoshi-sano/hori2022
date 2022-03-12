@@ -1,14 +1,11 @@
 # Twitterシェア用ボタンのクラス
 class PhBangBang::ShareButton < PhBangBang::Sprite
-  IMAGE = Image.new(50, 50, C_WHITE).tap { |img|
-    img.draw_font(5, 5, "Tw", Font.default, C_BLACK)
-  }
   URL = "https://hoshi-sano.github.io/hori2022/"
   TEXT_BASE = "score人のファンを魅了しました！"
   HASHTAG = "サイキックヒーツBANGBANG"
 
   def initialize(x, y, score)
-    super(x, y, IMAGE)
+    super(x, y, DXOpal::Image[:share_button])
     @score = score
   end
 

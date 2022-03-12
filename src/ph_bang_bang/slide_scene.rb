@@ -1,21 +1,12 @@
 # スライドシーン管理用クラス
 class PhBangBang::SlideScene < PhBangBang::BaseScene
-  SLIDE = {
-    story: [
-      Image.new(Window.width, Window.height, [50, 50, 50]),
-      Image.new(Window.width, Window.height, [100, 100, 100]),
-      Image.new(Window.width, Window.height, [150, 150, 150]),
-      Image.new(Window.width, Window.height, [200, 200, 200]),
-    ],
-    credit: [
-      Image.new(Window.width, Window.height, [100, 100, 100]),
-    ],
-  }
-  LEFT_BUTTON_IMAGE = Image.new(Window.width / 2, Window.height - 50, C_BLUE)
-  RIGHT_BUTTON_IMAGE = Image.new(Window.width / 2, Window.height - 50, C_RED)
-
   def initialize(type)
-    @slides = SLIDE[type]
+    @slides =case type
+             when :story
+               [DXOpal::Image[:story_01], DXOpal::Image[:story_02]]
+             when :credit
+               [DXOpal::Image[:credit]]
+             end
     super(nil)
     @index = 0
     update_buttons
@@ -23,8 +14,8 @@ class PhBangBang::SlideScene < PhBangBang::BaseScene
 
   def generate_components
     @current_slide = PBB::Sprite.new(0, 0, @slides[0])
-    @prev_button = PBB::SlideChangeButton.new(0, 50, LEFT_BUTTON_IMAGE, self, :prev)
-    @next_button = PBB::SlideChangeButton.new(Window.width / 2, 50, RIGHT_BUTTON_IMAGE, self, :next)
+    @prev_button = PBB::SlideChangeButton.new(0, 0, DXOpal::Image[:left_button], self, :prev)
+    @next_button = PBB::SlideChangeButton.new(Window.width / 2, 0, DXOpal::Image[:right_button], self, :next)
     @defence_components << @current_slide
     @defence_components << @prev_button
     @defence_components << @next_button

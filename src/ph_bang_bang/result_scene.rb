@@ -5,11 +5,12 @@ class PhBangBang::ResultScene < PhBangBang::BaseScene
 
   def initialize(score)
     super(nil)
-    @score_board = PBB::ScoreBoard.new(75, 500, nil, score)
+    @score_board = PBB::ScoreBoard.new(85, 450, nil, score)
     @close_button =
       PBB::SceneChangeButton.new(400, 10, DXOpal::Image[:back_button], self, PBB::TitleScene)
-    @share_button = PBB::ShareButton.new(200, 575, score)
+    @share_button = PBB::ShareButton.new(126, 575, score)
     @defence_components << BG
+    @defence_components << PBB::Sprite.new(3, 200, DXOpal::Image[:oops])
     @defence_components << @score_board
     @defence_components << @close_button
     @defence_components << @share_button
