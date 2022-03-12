@@ -7,9 +7,9 @@ class PhBangBang::ScoreBoard < PhBangBang::Sprite
     4 => 10000,
     5 => 20000,
     6 => 30000,
-    7 => 40000,
-    8 => 50000,
-    9 => 60000,
+    7 => 50000,
+    8 => 70000,
+    9 => 90000,
   }
   OFFSET_X = 15
   OFFSET_Y = 15
@@ -25,6 +25,14 @@ class PhBangBang::ScoreBoard < PhBangBang::Sprite
 
   def score=(v)
     @score = v
+    case @current_level
+    when 1, 2, 3
+      DXOpal::Sound[:cheer_1].play
+    when 4, 5, 6
+      DXOpal::Sound[:cheer_2].play
+    when 7, 8, 9
+      DXOpal::Sound[:cheer_3].play
+    end
     level_up if @score >= (LEVEL_MAP[@current_level + 1] || Float::INFINITY)
   end
 

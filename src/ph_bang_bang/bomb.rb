@@ -29,6 +29,7 @@ class PhBangBang::Bomb < PhBangBang::TileObject
     when 1
       self.image = DXOpal::Image[:bomb_03]
     when 0
+      @tile.field.scene.add_score(1000)
       self.vanish
     end
   end

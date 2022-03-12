@@ -26,6 +26,9 @@ end
 PBB = PhBangBang # shortcut
 
 [
+  [:cheer_1, :mp3],
+  [:cheer_2, :mp3],
+  [:cheer_3, :mp3],
   [:scratch, :mp3],
   [:title, :mp3],
 ].each do |key, ext|
