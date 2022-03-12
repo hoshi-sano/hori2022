@@ -58,4 +58,10 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
   def activate_loop_effect
     @loop_effect.activate
   end
+
+  def finalize
+    DXOpal::Sound[:game_play].stop
+    DXOpal::Sound[:water].stop
+    super
+  end
 end
