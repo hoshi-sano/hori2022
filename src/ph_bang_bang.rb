@@ -25,7 +25,12 @@ module PhBangBang
 end
 PBB = PhBangBang # shortcut
 
-DXOpal::Sound.register(:title, "sounds/title.mp3")
+[
+  [:scratch, :mp3],
+  [:title, :mp3],
+].each do |key, ext|
+  DXOpal::Sound.register(key, "sounds/#{key}.#{ext}")
+end
 [
   :back_button,
   :bomb_01,

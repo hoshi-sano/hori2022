@@ -74,7 +74,10 @@ class PhBangBang::Field < PhBangBang::Sprite
     end
     moved_tiles.each(&:moved_post_process)
 
-    move_effect if moved_tiles.any?
+    if moved_tiles.any?
+      DXOpal::Sound[:scratch].play
+      move_effect
+    end
 
     # タイル移動後のルートチェック
     #   * 現在の移動進路をハイライトする
