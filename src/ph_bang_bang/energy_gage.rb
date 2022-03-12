@@ -5,7 +5,7 @@ class PhBangBang::EnergyGage < PhBangBang::Sprite
   OFFSET_Y = 8
 
   def initialize(character)
-    super(90, 610, DXOpal::Image[:energy_gage])
+    super(80, 620, DXOpal::Image[:energy_gage])
     @character = character
     @character.energy_gage = self
     @gage = (0..9).map { |n|

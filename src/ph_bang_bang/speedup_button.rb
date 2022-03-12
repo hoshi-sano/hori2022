@@ -1,17 +1,35 @@
 # 進行早送り用ボタンのクラス
 class PhBangBang::SpeedupButton < PhBangBang::Sprite
-  def initialize(x = 0, y = 0, image = nil, character)
-    super(x, y, image)
+  attr_accessor :pair
+
+  def initialize(x, y, character, other = nil)
+    super(x, y, DXOpal::Image[:speedup_button])
     @character = character
     @on = false
+    if other
+      @pair = other
+      other.pair = self
+    end
+  end
+
+  def turn_off
+    @on = false
+    self.image = DXOpal::Image[:speedup_button]
+  end
+
+  def turn_on
+    @on = true
+    self.image = DXOpal::Image[:speedup_button_HL]
   end
 
   def hit
     if @on
-      @on = false
+      turn_off
+      @pair.turn_off
       @character.tmp_speed = nil
     else
-      @on = true
+      turn_on
+      @pair.turn_on
       @character.tmp_speed = 1
     end
   end

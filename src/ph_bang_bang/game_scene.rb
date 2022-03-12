@@ -8,13 +8,14 @@ class PhBangBang::GameScene < PhBangBang::BaseScene
     @energy_gage = PBB::EnergyGage.new(@character)
     @close_button =
       PBB::SceneChangeButton.new(400, 10, DXOpal::Image[:back_button], self, PBB::TitleScene)
-    @speedup_button =
-      PBB::SpeedupButton.new(30, 610, DXOpal::Image[:speedup_button], @character)
+    @speedup_button_1 = PBB::SpeedupButton.new(25, 620, @character)
+    @speedup_button_2 = PBB::SpeedupButton.new(375, 620, @character, @speedup_button_1)
     @score_board = PBB::ScoreBoard.new(85, 50, @character)
     @loop_effect = PBB::LoopEffect.new
     @defence_components << bg
     @defence_components << @close_button
-    @defence_components << @speedup_button
+    @defence_components << @speedup_button_1
+    @defence_components << @speedup_button_2
     @defence_components << @score_board
     @defence_components << @field
     @defence_components << @energy_gage
